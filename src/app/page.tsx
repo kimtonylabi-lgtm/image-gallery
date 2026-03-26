@@ -47,7 +47,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4 flex-wrap">
             <h1 className="text-xl font-bold text-gray-800">
-              티제이플라텍 <span className="text-blue-500">제작명판 샘플</span>
+              <span className="text-blue-500">제작명판샘플</span>
             </h1>
             <span className="text-xs text-gray-500 border-l border-gray-300 pl-4">
               제품문의: 태성산업 담당자 또는 티제이플라텍 최원호 이사{" "}
