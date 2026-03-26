@@ -44,32 +44,32 @@ export default function Home() {
     <div className="min-h-screen">
       {/* Header */}
       <header className="bg-white shadow-sm sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-4 flex-wrap">
-            <h1 className="text-xl font-bold text-gray-800">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 py-3 sm:py-4">
+          <div className="flex items-center justify-between">
+            <h1 className="text-lg sm:text-xl font-bold text-gray-800">
               <span className="text-blue-500">제작명판샘플</span>
             </h1>
-            <span className="text-xs text-gray-500 border-l border-gray-300 pl-4">
-              제품문의: 태성산업 담당자 또는 티제이플라텍 최원호 이사{" "}
-              <a href="tel:010-7272-1762" className="text-blue-500 font-medium hover:underline">
-                010-7272-1762
-              </a>
-            </span>
+            <button
+              onClick={() => setShowUpload(true)}
+              className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors cursor-pointer"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              </svg>
+              업로드
+            </button>
           </div>
-          <button
-            onClick={() => setShowUpload(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium rounded-lg transition-colors cursor-pointer"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-            </svg>
-            업로드
-          </button>
+          <p className="text-[11px] sm:text-xs text-gray-500 mt-1.5">
+            제품문의: 태성산업 담당자 또는 티제이플라텍 최원호 이사{" "}
+            <a href="tel:010-7272-1762" className="text-blue-500 font-medium hover:underline">
+              010-7272-1762
+            </a>
+          </p>
         </div>
       </header>
 
       {/* Main */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
+      <main className="max-w-7xl mx-auto px-3 sm:px-6 py-4 sm:py-6">
         {/* Category tabs */}
         <CategoryTabs
           categories={categories}

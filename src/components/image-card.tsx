@@ -26,12 +26,12 @@ export default function ImageCard({ image, categories, onClick }: ImageCardProps
         />
       </div>
 
-      {/* Hover overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-3">
-        <h3 className="text-white font-semibold text-sm truncate">{image.title}</h3>
-        <span className="text-white/80 text-xs mt-0.5">{categoryName}</span>
+      {/* Info - always visible on mobile, hover on desktop */}
+      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent p-2 sm:p-3 sm:inset-0 sm:via-black/20 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end">
+        <h3 className="text-white font-semibold text-xs sm:text-sm truncate">{image.title}</h3>
+        <span className="text-white/80 text-[10px] sm:text-xs mt-0.5">{categoryName}</span>
         {image.description && (
-          <p className="text-white/70 text-xs mt-1 line-clamp-2">{image.description}</p>
+          <p className="text-white/70 text-[10px] sm:text-xs mt-1 line-clamp-2 hidden sm:block">{image.description}</p>
         )}
       </div>
     </div>

@@ -88,38 +88,38 @@ export default function UploadModal({ categories, onUpload, onClose }: UploadMod
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/50 sm:p-4" onClick={onClose}>
       <div
-        className="bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col"
+        className="bg-white sm:rounded-xl rounded-t-xl shadow-2xl w-full max-w-2xl max-h-[95vh] sm:max-h-[90vh] flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
-          <h2 className="text-lg font-bold text-gray-800">이미지 업로드</h2>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 text-2xl leading-none cursor-pointer">
+        <div className="flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200">
+          <h2 className="text-base sm:text-lg font-bold text-gray-800">이미지 업로드</h2>
+          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 text-2xl leading-none cursor-pointer p-1">
             ✕
           </button>
         </div>
 
         {/* Content */}
-        <div className="flex-1 overflow-y-auto p-6">
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6">
           {/* Drop zone */}
           <div
             onDragOver={(e) => { e.preventDefault(); setIsDragOver(true); }}
             onDragLeave={() => setIsDragOver(false)}
             onDrop={handleDrop}
             onClick={() => fileInputRef.current?.click()}
-            className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-colors ${
+            className={`border-2 border-dashed rounded-xl p-5 sm:p-8 text-center cursor-pointer transition-colors ${
               isDragOver
                 ? "border-blue-400 bg-blue-50"
                 : "border-gray-300 hover:border-blue-300 hover:bg-gray-50"
             }`}
           >
-            <svg className="w-12 h-12 mx-auto mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
             </svg>
-            <p className="text-gray-600 font-medium">이미지를 드래그하거나 클릭하여 선택</p>
-            <p className="text-gray-400 text-sm mt-1">JPG, PNG, GIF, WebP 지원</p>
+            <p className="text-gray-600 font-medium text-sm sm:text-base">클릭하여 이미지 선택</p>
+            <p className="text-gray-400 text-xs sm:text-sm mt-1">JPG, PNG, GIF, WebP 지원</p>
             <input
               ref={fileInputRef}
               type="file"
@@ -140,11 +140,11 @@ export default function UploadModal({ categories, onUpload, onClose }: UploadMod
                 선택된 파일 ({pendingFiles.length}개)
               </h3>
               {pendingFiles.map((pending, index) => (
-                <div key={index} className="flex gap-4 p-3 bg-gray-50 rounded-lg">
+                <div key={index} className="flex gap-3 sm:gap-4 p-2.5 sm:p-3 bg-gray-50 rounded-lg">
                   <img
                     src={pending.preview}
                     alt={pending.title}
-                    className="w-20 h-20 object-cover rounded-lg flex-shrink-0"
+                    className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-lg flex-shrink-0"
                   />
                   <div className="flex-1 min-w-0 space-y-2">
                     <input
@@ -184,7 +184,7 @@ export default function UploadModal({ categories, onUpload, onClose }: UploadMod
 
         {/* Footer */}
         {pendingFiles.length > 0 && (
-          <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-end gap-3">
+          <div className="px-4 sm:px-6 py-3 sm:py-4 border-t border-gray-200 flex items-center justify-end gap-3 pb-[env(safe-area-inset-bottom,12px)]">
             {isUploading && (
               <span className="text-sm text-gray-500 mr-auto">
                 {uploadProgress}/{pendingFiles.length} 업로드 중...

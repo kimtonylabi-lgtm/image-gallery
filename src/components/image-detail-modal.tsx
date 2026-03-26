@@ -55,22 +55,22 @@ export default function ImageDetailModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/70 sm:p-4" onClick={onClose}>
       <div
-        className="bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col md:flex-row overflow-hidden"
+        className="bg-white sm:rounded-xl rounded-t-xl shadow-2xl w-full max-w-4xl max-h-[95vh] sm:max-h-[90vh] flex flex-col md:flex-row overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Image */}
-        <div className="md:w-2/3 bg-gray-900 flex items-center justify-center min-h-[300px] md:min-h-0">
+        <div className="md:w-2/3 bg-gray-900 flex items-center justify-center min-h-[200px] sm:min-h-[300px] md:min-h-0">
           <img
             src={image.imageData}
             alt={image.title}
-            className="max-w-full max-h-[60vh] md:max-h-[90vh] object-contain"
+            className="max-w-full max-h-[40vh] sm:max-h-[60vh] md:max-h-[90vh] object-contain"
           />
         </div>
 
         {/* Info panel */}
-        <div className="md:w-1/3 flex flex-col min-w-[280px]">
+        <div className="md:w-1/3 flex flex-col md:min-w-[280px]">
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200">
             <h2 className="text-sm font-semibold text-gray-500">상세 정보</h2>
@@ -135,7 +135,7 @@ export default function ImageDetailModal({
           </div>
 
           {/* Actions */}
-          <div className="px-4 py-3 border-t border-gray-200 flex gap-2">
+          <div className="px-4 py-3 border-t border-gray-200 flex gap-2 pb-[env(safe-area-inset-bottom,12px)]">
             {isEditing ? (
               <>
                 <button
@@ -145,13 +145,13 @@ export default function ImageDetailModal({
                     setDescription(image.description);
                     setCategory(image.category);
                   }}
-                  className="flex-1 px-3 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-lg cursor-pointer"
+                  className="flex-1 px-3 py-2.5 text-sm text-gray-600 hover:bg-gray-100 active:bg-gray-200 rounded-lg cursor-pointer"
                 >
                   취소
                 </button>
                 <button
                   onClick={handleSave}
-                  className="flex-1 px-3 py-2 text-sm font-medium text-white bg-blue-500 hover:bg-blue-600 rounded-lg cursor-pointer"
+                  className="flex-1 px-3 py-2.5 text-sm font-medium text-white bg-blue-500 hover:bg-blue-600 active:bg-blue-700 rounded-lg cursor-pointer"
                 >
                   저장
                 </button>
@@ -160,13 +160,13 @@ export default function ImageDetailModal({
               <>
                 <button
                   onClick={() => setIsEditing(true)}
-                  className="flex-1 px-3 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-lg cursor-pointer"
+                  className="flex-1 px-3 py-2.5 text-sm text-gray-600 hover:bg-gray-100 active:bg-gray-200 rounded-lg cursor-pointer"
                 >
                   수정
                 </button>
                 <button
                   onClick={handleDelete}
-                  className="flex-1 px-3 py-2 text-sm text-red-500 hover:bg-red-50 rounded-lg cursor-pointer"
+                  className="flex-1 px-3 py-2.5 text-sm text-red-500 hover:bg-red-50 active:bg-red-100 rounded-lg cursor-pointer"
                 >
                   삭제
                 </button>
