@@ -46,7 +46,7 @@ export default function Home() {
       <header className="bg-white shadow-sm sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
           <h1 className="text-xl font-bold text-gray-800">
-            <span className="text-blue-500">Image</span> Gallery
+            티제이플라텍 <span className="text-blue-500">제작명판 샘플</span>
           </h1>
           <button
             onClick={() => setShowUpload(true)}
