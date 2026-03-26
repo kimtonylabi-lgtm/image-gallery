@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { useIndexedDB } from "@/hooks/use-indexed-db";
+import { useFirebase } from "@/hooks/use-firebase";
 import CategoryTabs from "@/components/category-tabs";
 import ImageGrid from "@/components/image-grid";
 import UploadModal from "@/components/upload-modal";
@@ -18,7 +18,7 @@ export default function Home() {
     removeImage,
     addCategory,
     removeCategory,
-  } = useIndexedDB();
+  } = useFirebase();
 
   const [activeCategory, setActiveCategory] = useState("all");
   const [showUpload, setShowUpload] = useState(false);
@@ -67,7 +67,7 @@ export default function Home() {
           categories={categories}
           activeCategory={activeCategory}
           onSelect={setActiveCategory}
-          onAdd={addCategory}
+          onAdd={(cat) => addCategory(cat.name, cat.order)}
           onRemove={removeCategory}
         />
 
@@ -101,8 +101,8 @@ export default function Home() {
             updateImage(updated);
             setSelectedImage(updated);
           }}
-          onDelete={(id) => {
-            removeImage(id);
+          onDelete={(image) => {
+            removeImage(image);
             setSelectedImage(null);
           }}
           onClose={() => setSelectedImage(null)}

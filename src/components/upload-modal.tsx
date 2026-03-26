@@ -1,12 +1,12 @@
 "use client";
 
 import { useState, useRef, useCallback } from "react";
-import type { Category, ImageItem } from "@/types";
+import type { Category } from "@/types";
 import { createImageData } from "@/hooks/use-image-resize";
 
 interface UploadModalProps {
   categories: Category[];
-  onUpload: (image: ImageItem) => void;
+  onUpload: (imageData: string, thumbnailData: string, title: string, description: string, category: string) => Promise<void>;
   onClose: () => void;
 }
 
@@ -21,6 +21,7 @@ interface PendingFile {
 export default function UploadModal({ categories, onUpload, onClose }: UploadModalProps) {
   const [pendingFiles, setPendingFiles] = useState<PendingFile[]>([]);
   const [isUploading, setIsUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
   const [isDragOver, setIsDragOver] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -66,22 +67,20 @@ export default function UploadModal({ categories, onUpload, onClose }: UploadMod
   const handleUploadAll = async () => {
     if (pendingFiles.length === 0) return;
     setIsUploading(true);
+    setUploadProgress(0);
 
-    for (const pending of pendingFiles) {
+    for (let i = 0; i < pendingFiles.length; i++) {
+      const pending = pendingFiles[i];
       const { imageData, thumbnailData } = await createImageData(pending.file);
-      const now = new Date().toISOString();
-      const image: ImageItem = {
-        id: crypto.randomUUID(),
-        title: pending.title || "Untitled",
-        description: pending.description,
-        category: pending.category,
+      await onUpload(
         imageData,
         thumbnailData,
-        createdAt: now,
-        updatedAt: now,
-      };
-      onUpload(image);
+        pending.title || "Untitled",
+        pending.description,
+        pending.category
+      );
       URL.revokeObjectURL(pending.preview);
+      setUploadProgress(i + 1);
     }
 
     setIsUploading(false);
@@ -185,10 +184,16 @@ export default function UploadModal({ categories, onUpload, onClose }: UploadMod
 
         {/* Footer */}
         {pendingFiles.length > 0 && (
-          <div className="px-6 py-4 border-t border-gray-200 flex justify-end gap-3">
+          <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-end gap-3">
+            {isUploading && (
+              <span className="text-sm text-gray-500 mr-auto">
+                {uploadProgress}/{pendingFiles.length} 업로드 중...
+              </span>
+            )}
             <button
               onClick={onClose}
-              className="px-4 py-2 text-sm text-gray-600 hover:text-gray-800 rounded-lg hover:bg-gray-100 cursor-pointer"
+              disabled={isUploading}
+              className="px-4 py-2 text-sm text-gray-600 hover:text-gray-800 rounded-lg hover:bg-gray-100 disabled:opacity-50 cursor-pointer"
             >
               취소
             </button>

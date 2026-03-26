@@ -7,7 +7,7 @@ interface ImageDetailModalProps {
   image: ImageItem;
   categories: Category[];
   onUpdate: (image: ImageItem) => void;
-  onDelete: (id: string) => void;
+  onDelete: (image: ImageItem) => void;
   onClose: () => void;
 }
 
@@ -39,7 +39,7 @@ export default function ImageDetailModal({
 
   const handleDelete = () => {
     if (confirm("이 이미지를 삭제하시겠습니까?")) {
-      onDelete(image.id);
+      onDelete(image);
       onClose();
     }
   };
@@ -63,7 +63,7 @@ export default function ImageDetailModal({
         {/* Image */}
         <div className="md:w-2/3 bg-gray-900 flex items-center justify-center min-h-[300px] md:min-h-0">
           <img
-            src={image.imageData}
+            src={image.imageUrl}
             alt={image.title}
             className="max-w-full max-h-[60vh] md:max-h-[90vh] object-contain"
           />
