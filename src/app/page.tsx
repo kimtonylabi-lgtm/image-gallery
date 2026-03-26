@@ -45,9 +45,17 @@ export default function Home() {
       {/* Header */}
       <header className="bg-white shadow-sm sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
-          <h1 className="text-xl font-bold text-gray-800">
-            티제이플라텍 <span className="text-blue-500">제작명판 샘플</span>
-          </h1>
+          <div className="flex items-center gap-4 flex-wrap">
+            <h1 className="text-xl font-bold text-gray-800">
+              티제이플라텍 <span className="text-blue-500">제작명판 샘플</span>
+            </h1>
+            <span className="text-xs text-gray-500 border-l border-gray-300 pl-4">
+              제품문의: 태성산업 담당자 또는 티제이플라텍 최원호 이사{" "}
+              <a href="tel:010-7272-1762" className="text-blue-500 font-medium hover:underline">
+                010-7272-1762
+              </a>
+            </span>
+          </div>
           <button
             onClick={() => setShowUpload(true)}
             className="flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium rounded-lg transition-colors cursor-pointer"
