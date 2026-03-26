@@ -3,9 +3,8 @@ export interface ImageItem {
   title: string;
   description: string;
   category: string;
-  imageUrl: string;
-  thumbnailUrl: string;
-  storagePath: string;
+  imageData: string;
+  thumbnailData: string;
   createdAt: string;
   updatedAt: string;
 }

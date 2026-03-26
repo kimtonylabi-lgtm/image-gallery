@@ -19,7 +19,7 @@ export default function ImageCard({ image, categories, onClick }: ImageCardProps
     >
       <div className="aspect-square overflow-hidden">
         <img
-          src={image.thumbnailUrl}
+          src={image.thumbnailData}
           alt={image.title}
           className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
           loading="lazy"

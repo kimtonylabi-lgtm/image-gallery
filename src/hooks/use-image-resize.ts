@@ -1,7 +1,7 @@
 "use client";
 
-const MAX_THUMBNAIL_SIZE = 400;
-const MAX_IMAGE_SIZE = 1920;
+const MAX_THUMBNAIL_SIZE = 300;
+const MAX_IMAGE_SIZE = 1200;
 
 function resizeImage(file: File, maxSize: number, quality: number): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -41,9 +41,11 @@ function resizeImage(file: File, maxSize: number, quality: number): Promise<stri
 }
 
 export async function createImageData(file: File) {
+  // Firestore document limit is 1MB
+  // thumbnail ~30KB, image ~400KB target
   const [imageData, thumbnailData] = await Promise.all([
-    resizeImage(file, MAX_IMAGE_SIZE, 0.85),
-    resizeImage(file, MAX_THUMBNAIL_SIZE, 0.7),
+    resizeImage(file, MAX_IMAGE_SIZE, 0.6),
+    resizeImage(file, MAX_THUMBNAIL_SIZE, 0.5),
   ]);
   return { imageData, thumbnailData };
 }

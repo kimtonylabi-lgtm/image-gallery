@@ -12,13 +12,7 @@ import {
   orderBy,
   getDocs,
 } from "firebase/firestore";
-import {
-  ref,
-  uploadString,
-  getDownloadURL,
-  deleteObject,
-} from "firebase/storage";
-import { db, storage } from "@/lib/firebase";
+import { db } from "@/lib/firebase";
 import type { ImageItem, Category } from "@/types";
 
 const DEFAULT_CATEGORIES: Category[] = [
@@ -33,13 +27,11 @@ export function useFirebase() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [isReady, setIsReady] = useState(false);
 
-  // Initialize categories if empty + realtime subscription
   useEffect(() => {
     let unsubImages: () => void;
     let unsubCategories: () => void;
 
     const init = async () => {
-      // Check if categories exist, if not seed defaults
       const catSnapshot = await getDocs(collection(db, "categories"));
       if (catSnapshot.empty) {
         for (const cat of DEFAULT_CATEGORIES) {
@@ -51,24 +43,22 @@ export function useFirebase() {
         }
       }
 
-      // Realtime listener for categories
       const catQuery = query(collection(db, "categories"), orderBy("order"));
       unsubCategories = onSnapshot(catQuery, (snapshot) => {
-        const cats: Category[] = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          name: doc.data().name,
-          order: doc.data().order,
-          categoryId: doc.data().categoryId,
-        })) as (Category & { categoryId?: string })[];
+        const cats: Category[] = snapshot.docs.map((d) => ({
+          id: d.id,
+          name: d.data().name,
+          order: d.data().order,
+          categoryId: d.data().categoryId,
+        }));
         setCategories(cats);
       });
 
-      // Realtime listener for images
       const imgQuery = query(collection(db, "images"), orderBy("createdAt", "desc"));
       unsubImages = onSnapshot(imgQuery, (snapshot) => {
-        const imgs: ImageItem[] = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
+        const imgs: ImageItem[] = snapshot.docs.map((d) => ({
+          id: d.id,
+          ...d.data(),
         })) as ImageItem[];
         setImages(imgs);
         setIsReady(true);
@@ -85,27 +75,13 @@ export function useFirebase() {
 
   const addImage = useCallback(
     async (imageData: string, thumbnailData: string, title: string, description: string, category: string) => {
-      const id = crypto.randomUUID();
       const now = new Date().toISOString();
-
-      // Upload images to Firebase Storage
-      const imageRef = ref(storage, `images/${id}/full`);
-      const thumbRef = ref(storage, `images/${id}/thumb`);
-
-      await uploadString(imageRef, imageData, "data_url");
-      await uploadString(thumbRef, thumbnailData, "data_url");
-
-      const imageUrl = await getDownloadURL(imageRef);
-      const thumbnailUrl = await getDownloadURL(thumbRef);
-
-      // Save metadata to Firestore
       await addDoc(collection(db, "images"), {
         title: title || "Untitled",
         description,
         category,
-        imageUrl,
-        thumbnailUrl,
-        storagePath: `images/${id}`,
+        imageData,
+        thumbnailData,
         createdAt: now,
         updatedAt: now,
       });
@@ -113,31 +89,17 @@ export function useFirebase() {
     []
   );
 
-  const updateImage = useCallback(
-    async (image: ImageItem) => {
-      const docRef = doc(db, "images", image.id);
-      await updateDoc(docRef, {
-        title: image.title,
-        description: image.description,
-        category: image.category,
-        updatedAt: new Date().toISOString(),
-      });
-    },
-    []
-  );
+  const updateImage = useCallback(async (image: ImageItem) => {
+    const docRef = doc(db, "images", image.id);
+    await updateDoc(docRef, {
+      title: image.title,
+      description: image.description,
+      category: image.category,
+      updatedAt: new Date().toISOString(),
+    });
+  }, []);
 
   const removeImage = useCallback(async (image: ImageItem) => {
-    // Delete from Storage
-    const storagePath = (image as ImageItem & { storagePath?: string }).storagePath;
-    if (storagePath) {
-      try {
-        await deleteObject(ref(storage, `${storagePath}/full`));
-        await deleteObject(ref(storage, `${storagePath}/thumb`));
-      } catch {
-        // Storage files may already be deleted
-      }
-    }
-    // Delete from Firestore
     await deleteDoc(doc(db, "images", image.id));
   }, []);
 
@@ -152,8 +114,7 @@ export function useFirebase() {
 
   const removeCategory = useCallback(
     async (id: string) => {
-      // Move images in deleted category to "etc"
-      const etcCat = categories.find((c) => (c as Category & { categoryId?: string }).categoryId === "etc" || c.name === "기타");
+      const etcCat = categories.find((c) => c.categoryId === "etc" || c.name === "기타");
       const etcId = etcCat?.id;
 
       if (etcId) {
